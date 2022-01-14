@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import {
   IsString,
   IsEmail,
@@ -82,11 +82,14 @@ export class UpdateUserDto {
   roleName?: ROLE;
 }
 
+@InputType()
 export class LoginDto {
+  @Field()
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @Field()
   @IsNotEmpty()
   @IsString()
   @MaxLength(32)
@@ -128,3 +131,34 @@ export class ResetPasswordDto {
   @IsString()
   resetPasswordToken: string;
 }
+
+@ObjectType()
+export class UserData {
+  @Field(() => Int)
+  id?: number
+
+  @Field()
+  email?: string
+
+  @Field()
+  firstName?: string
+
+  @Field()
+  lastName?: string
+
+  @Field()
+  scope: string 
+}
+  @ObjectType()
+export class RegisterLoginResponse {
+  @Field(() => UserData)
+  user: UserData
+  
+  @Field()
+  accessToken: string
+
+  @Field()
+  refreshToken: string
+}
+
+

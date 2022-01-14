@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import { User } from "src/db/entities/user.entity"
-import { RegisterDto } from "../dto"
+import { LoginDto, RegisterDto, RegisterLoginResponse, UserData } from "../dto"
 
 @Injectable()
 export class AuthService {
@@ -14,5 +14,25 @@ export class AuthService {
       user.lastName =  createUserData.lastName
       user.password = createUserData.password
       return user
+    }
+
+    async login(loginDto: LoginDto): Promise<RegisterLoginResponse> {
+
+      console.log(loginDto)
+      const userData = await new UserData()
+      userData.email = loginDto.email
+      userData.scope = "Admin"
+      userData.firstName = "firstname"
+      userData.lastName = "lastname"
+      userData.id = 5
+      
+      const registerLoginResponse = new RegisterLoginResponse() 
+      registerLoginResponse.user = userData
+      registerLoginResponse.accessToken = "accessToken"
+      registerLoginResponse.refreshToken = "refreshToken" 
+      
+      console.log()
+      return registerLoginResponse
+  
     }
   }
