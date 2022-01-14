@@ -1,10 +1,12 @@
 import { Injectable } from "@nestjs/common"
+import { JwtService } from "@nestjs/jwt"
 import { User } from "src/db/entities/user.entity"
+import { jwtConstants } from "src/utils/constant/jwtConstants"
 import { LoginDto, RegisterDto, RegisterLoginResponse, UserData } from "../dto"
 
 @Injectable()
 export class AuthService {
-    
+    constructor(private jwtServive: JwtService) {}
    async register(createUserData: RegisterDto): Promise<User> {
        console.log(createUserData)
       const user =new User() 
@@ -27,12 +29,29 @@ export class AuthService {
       userData.id = 5
       
       const registerLoginResponse = new RegisterLoginResponse() 
+      const payload = registerLoginResponse 
       registerLoginResponse.user = userData
-      registerLoginResponse.accessToken = "accessToken"
+      registerLoginResponse.accessToken = this.jwtServive.sign({user: payload}); // 1 week
       registerLoginResponse.refreshToken = "refreshToken" 
       
-      console.log()
       return registerLoginResponse
-  
+    }
+
+    async testAuthen() : Promise<RegisterLoginResponse> {
+    
+      const userData = await new UserData()
+      userData.email = "new"
+      userData.scope = "Admin"
+      userData.firstName = "firstname"
+      userData.lastName = "lastname"
+      userData.id = 5
+      
+      const registerLoginResponse = new RegisterLoginResponse() 
+      const payload = registerLoginResponse 
+      registerLoginResponse.user = userData
+      registerLoginResponse.accessToken = this.jwtServive.sign({user: payload}); // 1 week
+      registerLoginResponse.refreshToken = "refreshToken" 
+      
+      return registerLoginResponse
     }
   }
