@@ -26,6 +26,4 @@ export class AuthResolver {
     async testAuthen(): Promise<RegisterLoginResponse> {
       return this.usersService.testAuthen();
   }
-
-
 }

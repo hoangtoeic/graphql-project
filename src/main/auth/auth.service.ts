@@ -7,6 +7,8 @@ import { LoginDto, RegisterDto, RegisterLoginResponse, UserData } from '../dto';
 @Injectable()
 export class AuthService {
   constructor(private jwtServive: JwtService) {}
+
+
   async register(createUserData: RegisterDto): Promise<User> {
     console.log(createUserData);
     const user = new User();
