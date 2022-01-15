@@ -13,6 +13,18 @@ import { ROLE } from 'src/db/entities/user.entity';
 const passwordRegex = new RegExp('(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
 const passwordMessage = 'Password must have at least 8 character, including number, letter and special characters'
 
+@ObjectType()
+export class ForgotPasswordResponse {
+  @Field()
+  message: string
+}
+
+@ObjectType()
+export class ResetPasswordResponse {
+  @Field()
+  message: string
+}
+
 @InputType()
 export class RegisterDto {
   @IsNotEmpty()
@@ -98,10 +110,11 @@ export class LoginDto {
   } )
   password: string;
 }
-
+@InputType()
 export class ForgotPasswordDto {
   @IsNotEmpty()
   @IsEmail()
+  @Field()
   email: string;
 }
 
@@ -111,14 +124,17 @@ export class createRoleDto {
   @IsString()
   name: string;
 }
-
+@InputType()
 export class RefreshTokenDto {
   @IsNotEmpty()
   @IsString()
+  @Field()
   refreshToken: string;
 }
 
+@InputType()
 export class ResetPasswordDto {
+  @Field()
   @IsNotEmpty()
   @IsString()
   @MaxLength(32)
@@ -127,6 +143,7 @@ export class ResetPasswordDto {
   })
   newPassword: string;
 
+  @Field()
   @IsNotEmpty()
   @IsString()
   resetPasswordToken: string;
@@ -149,6 +166,7 @@ export class UserData {
   @Field()
   scope: string 
 }
+
   @ObjectType()
 export class RegisterLoginResponse {
   @Field(() => UserData)
@@ -160,5 +178,15 @@ export class RegisterLoginResponse {
   @Field()
   refreshToken: string
 }
+
+@ObjectType()
+export class RefreshTokenResponse {
+  @Field()
+  accessToken: string
+
+  @Field()
+  refreshToken: string
+}
+
 
 
